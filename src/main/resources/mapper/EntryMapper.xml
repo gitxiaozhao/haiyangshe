@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rainier.mapper.EntryMapper" >
+
+    <select id="getEntryList" resultType="map">
+        call hl();
+        
+    </select>
+
+    <select id="getEntryTypeByPid" resultType="com.rainier.model.EntryType">
+        select id,type_name as typeName,pid from entry_type where pid = #{pid}
+    </select>
+
+
+</mapper>

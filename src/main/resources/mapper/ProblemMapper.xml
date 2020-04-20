@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rainier.mapper.ProblemMapper" >
+
+  <insert id="addProblem" >
+      insert into `problem`(user_id,problem,problem_time,problem_state,problem_img,click)
+      values (#{problem.user_id},#{problem.problem},#{problem.problem_time},#{problem.problem_state},#{problem.problem_img},#{problem.click})
+  </insert>
+    <insert id="addReply">
+        insert into `reply`(problem_id,user_id,text,last_id,reply_time,reply_img,reply_state,adopt)
+        values (#{reply.problem_id},#{reply.user_id},#{reply.text},#{reply.last_id},#{reply.reply_time},#{reply.reply_img},#{reply.reply_state},#{reply.adopt})
+    </insert>
+
+    <select id="getProblemImg" resultType="map">
+        select problem_img as url from `problem`
+    </select>
+    <select id="getReplyImg" resultType="map">
+        select reply_img as url from `reply`
+    </select>
+
+    <select id="getReplyByProblemId" resultType="map">
+        select t1.text,t1.reply_time,t2.account,t1.adopt from reply t1,pcuser t2
+        <where>
+            t1.user_id = t2.id
+            AND t1.problem_id = #{problemId}
+            AND t1.reply_state = 1
+        </where>
+        ORDER BY t1.reply_time ${ascOrDesc}
+        limit #{pageStart},#{pageSize}
+    </select>
+    <select id="getReplyByProblemIdCount" resultType="java.lang.Integer">
+        select count(*) from reply t1,pcuser t2
+        <where>
+            t1.user_id = t2.id
+            AND t1.problem_id = #{problemId}
+            AND t1.reply_state = 1
+        </where>
+    </select>
+
+    <select id="getReplyByAdopt" resultType="com.rainier.model.Reply">
+        select * from `reply` where adopt = 1
+    </select>
+    <update id="updateReplyAdopt">
+        update `reply` set adopt = 1 where id = #{reply.id}
+    </update>
+
+    <select id="getProblemById" resultType="map">
+        select t1.id,t2.account,t1.problem,t1.problem_img,t1.click,t1.problem_time from `problem` t1,pcuser t2 where t1.user_id = t2.id and t1.id = #{id}
+    </select>
+
+    <update id="addClick">
+        update `problem` set click = click+1 where id = #{id}
+    </update>
+
+
+    <update id="updateProblem">
+        update `problem` set problem = #{problem.problem},problem_state = #{problem.problem_state}  where id = #{problem.id}
+    </update>
+
+
+    <delete id="deleteProblemByIds">
+        delete from problem
+        <where>
+            id in
+            <foreach collection="ids"  index="index" item="item" open="(" separator="," close=")"  >
+                #{item}
+            </foreach>
+        </where>
+    </delete>
+
+    <delete id="deleteReplyByProblemIds">
+        delete from reply
+        <where>
+            problem_id in
+            <foreach collection="ids"  index="index" item="item" open="(" separator="," close=")"  >
+                #{item}
+            </foreach>
+        </where>
+    </delete>
+
+    <select id="getProblemHot" resultType="map">
+        select * from problem ORDER BY click desc LIMIT 0,10
+    </select>
+</mapper>

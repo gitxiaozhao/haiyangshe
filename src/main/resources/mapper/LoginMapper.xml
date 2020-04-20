@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rainier.mapper.LoginMapper" >
+
+    <select id="getPcuserByAccount" resultType="com.rainier.model.Pcuser">
+        select id from `pcuser` where account = #{pcuser.account} or phone = #{pcuser.phone}
+    </select>
+
+  <insert id="register" >
+      insert into `pcuser`(account,password,portrait,newdate,sex,phone)
+      values (#{pcuser.account},#{pcuser.password},#{pcuser.portrait},#{pcuser.newdate},#{pcuser.sex},#{pcuser.phone})
+  </insert>
+
+    <select id="getPcuserByAccountOrPhone" resultType="com.rainier.model.Pcuser">
+        select id,account,portrait,newdate,sex,phone from `pcuser` where password = #{pcuser.password} and (account = #{pcuser.account} or phone = #{pcuser.account})
+    </select>
+</mapper>

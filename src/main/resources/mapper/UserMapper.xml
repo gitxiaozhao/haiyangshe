@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rainier.mapper.UserMapper" >
+    <update id="updateUser" >
+        update pcuser set sex = #{pcuser.sex} where id = #{pcuser.id}
+    </update>
+    <update id="updateUserPortrait" >
+        update pcuser set portrait = #{pcuser.portrait} where id = #{pcuser.id}
+    </update>
+
+    <select id="getUserPortrait" resultType="map">
+        select portrait as url from pcuser
+    </select>
+
+    <select id="getPortraitByUserIdCount" resultType="java.lang.Integer">
+        select count(*) from problem where user_id = #{userId} and problem_state = #{type} 
+        <if test="type == 2">
+            and answer = #{answer}
+        </if>
+
+    </select>
+
+    <select id="getPortraitByUserId" resultType="map">
+        select id,problem,problem_time,problem_state,problem_img from problem where user_id = #{userId}
+        and problem_state = #{type}
+        <if test="type == 2">
+            and answer = #{answer}
+        </if>
+        order by problem_time ${ascOrDesc}
+        limit #{pageStart},#{pageSize}
+    </select>
+</mapper>

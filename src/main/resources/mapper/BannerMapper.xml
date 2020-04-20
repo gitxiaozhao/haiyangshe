@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rainier.mapper.BannerMapper" >
+
+    <select id="getBanner" resultType="com.rainier.model.Banner">
+        select id,imgUrl,bannerTime,sort,state from `banner` where state = 1 order by sort
+    </select>
+    <select id="getAdvertisement" resultType="map">
+        select * from advertisement where adv_state = 1 and expire &gt;= DATE(CURDATE())
+    </select>
+    <select id="getAdvertisementImg" resultType="map">
+        select img_url as url from advertisement
+    </select>
+
+</mapper>

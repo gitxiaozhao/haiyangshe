@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8" />
+	<link th:href="@{/static/reader/css/reader.css}" rel="stylesheet">
+	<link th:href="@{/css/css/font-awesome.min.css}" rel="stylesheet">
+    <link rel="stylesheet" href="/css/jquery-ui.min.css"/>
+	<script type="text/javascript" th:src="@{/static/reader/js/jquery-2.2.4.min.js}"></script>
+	<script type="text/javascript" th:src="@{/static/reader/js/json2.js}"></script>
+	<script type="text/javascript" th:src="@{/static/reader/js/helper.js}"></script>
+	<script type="text/javascript" th:src="@{/static/reader/js/reader.js}"></script>
+	<script type="text/javascript" th:src="@{/static/reader/js/jquery.mousewheel.js}"></script>
+    <script type="text/javascript" src="/js/plugins/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="/js/plugins/vue.min.js"></script>
+	<title th:text="${bookTitle}"></title>
+	<style>
+		.title {
+			text-align:center;
+		}
+		.author{
+			text-align:center;
+		}
+		.snajiao{
+			border-left: 5px solid transparent;
+			border-right: 5px solid transparent;
+			border-top: 5px solid #555555;
+			content: "";
+			position: relative;
+			width: 0;
+			top:15px;
+			left: 15px;
+			cursor: pointer;
+		}
+		.zhangjie {
+			border: 1px solid;
+			width: 545px;
+			border-radius: 5px;
+			padding-left: 10px;
+			margin: 10px 0;
+		}
+		#oneCXX {
+			position: absolute;
+			top: 50px;
+			left: 0;
+			z-index: 99;
+			width: 100%;
+			height: 100%;
+			box-shadow: 0px 5px 8px 0px #838383;
+		}
+	</style>
+</head>
+<body class="normal-book">
+	<div class="box skin-normal">
+		<div id="boxs" style="height: 100%;">
+			<div class="panel" id="J_Panel">
+				<div id="adTopBanner"></div>
+				<div class="chapter-title" id="J_ChapterTitle"><span th:text="${bookTitle}"></span></div>
+				<ul class="panel-list" id="J_BookPanel">
+					<!--<li class="cata-trigger" style="width:150px;">-->
+						<!--<select style="margin-top: -5px;" id="bookOptions" onchange="selectBook();">-->
+							<!--<option value="cbcda60b-1d47-4575-94ee-bab98d26cbac" >中国税务年鉴.2017</option>-->
+							<!--<option value="5e325e95-16e8-4882-a2ec-cdee53ae9c98">中国税务年鉴.2016</option>-->
+							<!--<option value="d13dad8b-25aa-4828-8948-086082bc61ca">中国税务年鉴.2015</option>-->
+							<!--<option value="b1a7609a-1d86-4898-b5f6-8eb9c97090ef">重庆国税年鉴.2015</option>-->
+						<!--</select>-->
+					<!--</li>-->
+					<!--<li class="bookmark-trigger">-->
+						<!--<i id="J_BookYearTrigger" title="书籍" class="fa fa-book" onclick="goToSearch();"></i>-->
+						<!--<div class="J_GuideDemo_1 J_GuideDemo_2" style="display:none;"><em></em>书籍</div>-->
+					<!--</li>-->
+					<!--<li class="cata-trigger">-->
+						<!--<i id="J_CatalogueTrigger" title="目录" class="fa fa-list"></i>-->
+						<!--<div class="J_GuideDemo_1 J_GuideDemo_2" style="display:none;"><em></em>目录</div>-->
+					<!--</li>-->
+					<!--<li class="bookmark-trigger">-->
+						<!--<i id="J_BookMarkTrigger" title="阅读方式" class="fa fa-bookmark"></i>-->
+						<!--<div class="J_GuideDemo_1 J_GuideDemo_2" style="display:none;"><em></em>阅读方式</div>-->
+					<!--</li>-->
+					<li class="bookmark-trigger">
+						<i id="J_CollectTrigger" title="收藏" class="fa fa-heart-o" onclick="favorite();">&nbsp;收藏</i>
+					</li>
+					<!--<li class="bookmark-trigger">-->
+						<!--<i id="J_DownloadTrigger" title="下载" class="fa fa-download" onclick="downloadPDF();">&nbsp;下载</i>-->
+					<!--</li>-->
+					<li class="bookmark-trigger">
+						<i id="J_PdfTrigger" title="PDF阅读" class="fa fa-file-o" onclick="readingPDF()">&nbsp;PDF阅读</i>
+						<i id="pppppsssss" title="html阅读" class="fa fa-reply" onclick="readingHTML()">&nbsp;文本阅读</i>
+					</li>
+					<!--fa-home-->
+				</ul>
+				<!-- 书籍 -->
+				<div class="catalogue r-hide" id="J_BookYear" style="display:none;">
+					<div class="catainner J_CataInner" style="height: 550px;">
+						<i class="angle" style="right: 105px;"></i>
+						<i class="close J_Close" onclick="hideDialog('J_BookYear')"></i>
+						<div class="hd"><h2>数字年鉴</h2></div>
+						<div class="bd">
+							<!--<a href="#" onclick="selectBook('cbcda60b-1d47-4575-94ee-bab98d26cbac');">中国税务年鉴.2017</a>&nbsp;&nbsp;-->
+							<!--<a href="#" onclick="selectBook('5e325e95-16e8-4882-a2ec-cdee53ae9c98');">中国税务年鉴.2016</a>&nbsp;&nbsp;-->
+							<!--<a href="#" onclick="selectBook('d13dad8b-25aa-4828-8948-086082bc61ca');">中国税务年鉴.2015</a>&nbsp;&nbsp;-->
+							<!--<a href="#" onclick="selectBook('b1a7609a-1d86-4898-b5f6-8eb9c97090ef');">重庆国税年鉴.2015</a>-->
+						</div>
+					</div>
+				</div>
+				<div class="catalogue r-hide" id="J_Catalogue" style="display:none;">
+					<div class="catainner J_CataInner" style="height: 550px;">
+						<i class="angle"></i>
+						<i class="close J_Close" onclick="hideDialog('J_Catalogue')"></i>
+						<div class="hd"><h2>目录</h2></div>
+						<div>
+							<div id="tocCategory" style="text-align: left; line-height: 30px; margin-left: 15px">
+								<template v-for="(item,index) in getDateList">
+									<h2 style="font-size: 20px"><a :href="item.src">{{item.name}}</a></h2>
+									<template v-for="(mues, i) in item.childs">
+										<div class="zhangjie">
+											<span style="display:inline-block; width: 500px;"><a :href="mues.src">{{mues.name}}</a></span>
+											<span class="snajiao" @click="currentBtn(index,i)"></span><br/>
+											<div v-show="mues.show" style="padding-left: 10px">
+												<template v-for="ss in mues.childs">
+													<p  class="inc" style="line-height: 25px"><a :href="ss.src">{{ss.name}}</a></p>
+													<template>
+														<p style="padding-left: 25px; font-size: 12px" v-show="ss.childs.length" v-for="minSs in ss.childs">
+															<a :href="minSs.src">{{minSs.name}}</a>
+														</p>
+													</template>
+												</template>
+											</div>
+										</div>
+									</template>
+								</template>
+							</div>
+						</div>
+						<!--<div id="tocCategory" class="bd">-->
+						<!--</div>-->
+					</div>
+				</div>
+			</div>
+			<!-- 这是pdf显示的 -->
+			<div id="oneCXX">
+				<iframe id="ddcccc" frameborder="0" width="100%" height="100%" :src="pdfUrl"></iframe>
+			</div>
+			<!-- 这是html 显示的-->
+			<div class="portrait-player" id="J_Portrait" style="display: block;">
+				<div class="page-style">
+					<div class="top-stone"></div>
+					<div class="article J_Article">
+						<div class="portrait-page-box J_PortraitMoveBox" style="font-size: 16px; top: 0px;">
+							<div class="article-content" style="min-height: 434px;">
+								<div class="ne-content J_NEContent" style="min-height: 848px;">
+									<div id="div_content" style="width: 660px">
+									</div>
+								</div>
+								<div class="page-percent J_NEPercent"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+        var app = new Vue({
+            el: '#boxs',
+            data: {
+                pdfUrl: '/reader/getPDF/',
+                getDateList: [],
+                b: false,
+                ToBeProcessedUrl: '', // 待处理的url
+				buttenClk: '按钮',
+				addressUrl: '' // 处理后的url
+            },
+            mounted () {
+				this.dsaa()
+                this.mttList()
+            },
+            methods: {
+                dsaa () {
+                    this.ToBeProcessedUrl = (window.location.href).split("/")
+					 this.addressUrl = this.ToBeProcessedUrl[this.ToBeProcessedUrl.length - 1]
+                    this.pdfUrl = this.pdfUrl + '' + this.addressUrl
+				},
+                mttList () {
+                    $.ajax({
+                        url: '/reader/getCatalog/'+this.addressUrl,
+                        type: 'get',
+                        dataType: 'json'
+                    }).done(data => {
+                        this.getDateList = data
+                    })
+                },
+                currentBtn (index,i) {
+                    console.log(index, i)
+                    if(this.getDateList[index].childs[i].show) {
+                        this.getDateList[index].childs[i].show = !this.getDateList[index].childs[i].show
+					} else {
+                        this.getDateList[index].childs[i].show =!this.getDateList[index].childs[i].show
+					}
+                }
+            }
+        })
+	</script>
+	<script th:inline="javascript">
+        /*<![CDATA[*/
+        var pathName = /*[[${fileName}]]*/;
+        var resourceID = /*[[${resourceID}]]*/;
+        /*]]>*/
+	</script>
+</body>
+</html>

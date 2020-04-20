@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+<head>
+    <meta charset="utf-8">
+    <link href="/static/reader/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="/static/reader/css/font-awesome.min.css" rel="stylesheet">
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
+    <script type="text/javascript" src="/static/reader/js/jquery-2.2.4.min.js"></script>
+    <script type="text/javascript" src="/static/reader/js/json2.js"></script>
+    <script type="text/javascript" src="/static/reader/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/reader/js/helper.js"></script>
+</head>
+<body style="height: 100%; margin: 0">
+<div class="container" style="height: 100%">
+    <div class="row">
+        <button class="btn btn-default pull-right"  data-toggle="modal" data-target="#myModal" ><i class="fa fa-list"></i>更多选项</button>
+    </div>
+    <div id="container" style="height: 90%"></div>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">请选择</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-1">
+                        </div>
+                        <div  class="col-sm-5">
+                            <strong>维度</strong>
+                        </div>
+                        <div  class="col-sm-5">
+                            <strong>指标</strong>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-1">
+                        </div>
+                        <div id="div_x" class="col-sm-5">
+                        </div>
+                        <div id="div_y" class="col-sm-5">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="reLoadReport();">确定</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    var dom = document.getElementById("container");
+    var myChart = echarts.init(dom);
+    var app = {};
+    var title = "";
+    var staticType = "税收收入";
+    var slideList =  [];
+    var xList= [];
+    var legendList = [];
+    var selectedXList= [];
+    var selectedYList = [];
+    var selectedSlideList= [
+        {"code":"2013", "name":"2013"},
+        {"code":"2014", "name":"2014"},
+        {"code":"2015", "name":"2015"},
+        {"code":"2016", "name":"2016"},
+        {"code":"2017", "name":"2017"}];
+    option = null;
+
+    function getReportData(){
+        var json = {
+            "title": title,
+            "staticType": staticType,
+            "slideList": selectedSlideList,
+            "xList":selectedXList,
+            "legendList":selectedYList
+
+        };
+        var url = "/chart/getData";
+        var data = {
+            "url": url,
+            "data": JSON.stringify(json),
+            "callback": getReportDataCallBack
+        };
+
+        postData(data);
+    }
+
+    function getReportDataCallBack(jqXHR, status) {
+        if (jqXHR.status == 200) {
+            var result = jqXHR.responseJSON;
+            var baseJson = result.baseOption;
+            var optionJson = result.options;
+
+            option = {
+                baseOption: eval("(" + baseJson + ")"),
+                options: eval("(" + optionJson + ")")
+            };
+
+
+            if (option && typeof option === "object") {
+                myChart.setOption(option, true);
+            }
+        }
+        else {
+            //alert(result);
+        }
+    }
+
+    function getDimension(){
+
+        title = decodeURIComponent(getQueryStringParameter("title"));
+
+        var json = {"title": title};
+        var url = "/chart/getDimension";
+        var data = {
+            "url": url,
+            "async": false,
+            "data": title,
+            "callback": getDimensionCallBack
+        };
+
+        postData(data);
+    }
+
+    function getDimensionCallBack(jqXHR, status) {
+        if (jqXHR.status == 200) {
+            var result = jqXHR.responseJSON;
+            legendList = result.legend;
+            xList = result.x;
+            $(xList).each(
+                function(index,element){
+                    var divX = $("<div class=\"checkbox checkbox-primary\"></div>");
+
+                    if(index < 6){
+                        selectedXList.push(element);
+                        var inputX = $("<input name='checkX' value='"+element.name+"' id=\""+ element.code +"\" type=\"checkbox\" checked=\"checked\">");
+                        divX.append(inputX);
+                    }
+                    else {
+                        var inputX = $("<input name='checkX' value='"+element.name+"' id=\""+ element.code +"\" type=\"checkbox\" >");
+                        divX.append(inputX);
+                    }
+
+                    var labelX = $("<label htmlFor=\""+ element.code+"\">"+ element.name +"</label>");
+
+                    divX.append(labelX);
+                    $("#div_x").append(divX);
+                });
+
+            $(legendList).each(
+                function(index,element){
+
+                    var divY = $("<div class=\"checkbox checkbox-primary\"></div>");
+
+                    if(index < 6){
+                        selectedYList.push(element);
+                        var inputY = $("<input name='checkY' value='"+element.name+"' id=\""+ element.code +"\" type=\"checkbox\" checked=\"checked\">");
+                        divY.append(inputY);
+                    }
+                    else {
+                        var inputY = $("<input name='checkY' value='"+element.name+"' id=\""+ element.code +"\" type=\"checkbox\">");
+                        divY.append(inputY);
+                    }
+
+                    var labelY = $("<label htmlFor=\""+ element.code+"\">"+ element.name +"</label>");
+
+                    divY.append(labelY);
+                    $("#div_y").append(divY);
+                });
+
+        }
+        else {
+            //alert(result);
+        }
+    }
+
+    function reLoadReport(){
+
+        selectedXList = [];
+        $("input:checkbox[name='checkX']:checked").each(function() {
+            var name = $(this).val();
+            var code = this.id;
+            selectedXList.push({"code": code, "name": name});
+
+        });
+
+        selectedYList = [];
+        $("input:checkbox[name='checkY']:checked").each(function() {
+            var name = $(this).val();
+            var code = this.id;
+            selectedYList.push({"code": code, "name": name});
+
+        });
+
+        getReportData();
+    }
+
+    $(function() {
+
+        getDimension();
+        getReportData();
+    });
+
+</script>
+</body>
+</html>
