@@ -3,6 +3,7 @@ package com.rainier.service;
 import com.rainier.model.Pcuser;
 import com.rainier.util.Result;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 public interface UserService {
@@ -10,5 +11,7 @@ public interface UserService {
 
     Result updateUserPortrait(Pcuser pcuser);
 
-    Result getPortraitByUserId(Map map);
+    Result getProblemByUserId(Map map, HttpServletRequest request);
+
+    Result deleteProblemById(Map map, HttpServletRequest request);
 }

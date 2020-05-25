@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -54,11 +55,30 @@ public class UserController {
     * @创建人  wyz
     * @创建时间  2020/3/12
     */
-    @RequestMapping("getPortraitByUserIdAndType")
+    @RequestMapping("question")
     @ResponseBody
-    public Result getPortraitByUserIdAndType(@RequestBody Map map){
-        return userService.getPortraitByUserId(map);
+    public Result getProblemByUserIdAndType(@RequestBody Map map, HttpServletRequest request){
+        return userService.getProblemByUserId(map,request);
     }
+
+    /*
+    * 删除个人未通过的问题
+    * */
+    @RequestMapping("deleteProblemByIds")
+    @ResponseBody
+    public Result deleteProblemByIds(@RequestBody Map map, HttpServletRequest request){
+        return userService.deleteProblemById(map,request);
+    }
+
+
+    /*
+    * 我的回答
+    * */
+    /*@RequestMapping("answers")
+    @ResponseBody
+    public Result getPortraitByUserIdAndType(@RequestBody Map map, HttpServletRequest request){
+        return userService.getPortraitByUserId(map,request);
+    }*/
 
 
 }

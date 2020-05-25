@@ -9,11 +9,19 @@ public class Problem {
     private Integer user_id;
     private String problem;
     @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd")
-    private Date problem_time;
+    private Date submit_time;
     private Integer problem_state;
     private String problem_img;
     private Integer click;
     private Integer answer;
+    private Integer problem_info;
+    @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd")
+    private Date examine_time;
+    @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd")
+    private Date answer_time;
+    @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd")
+    private Date preserve_time;
+    private String fail_reason;
 
     public Integer getId() {
         return id;
@@ -39,12 +47,12 @@ public class Problem {
         this.problem = problem;
     }
 
-    public Date getProblem_time() {
-        return problem_time;
+    public Date getSubmit_time() {
+        return submit_time;
     }
 
-    public void setProblem_time(Date problem_time) {
-        this.problem_time = problem_time;
+    public void setSubmit_time(Date submit_time) {
+        this.submit_time = submit_time;
     }
 
     public Integer getProblem_state() {
@@ -77,5 +85,45 @@ public class Problem {
 
     public void setAnswer(Integer answer) {
         this.answer = answer;
+    }
+
+    public Integer getProblem_info() {
+        return problem_info;
+    }
+
+    public void setProblem_info(Integer problem_info) {
+        this.problem_info = problem_info;
+    }
+
+    public Date getExamine_time() {
+        return examine_time;
+    }
+
+    public void setExamine_time(Date examine_time) {
+        this.examine_time = examine_time;
+    }
+
+    public Date getAnswer_time() {
+        return answer_time;
+    }
+
+    public void setAnswer_time(Date answer_time) {
+        this.answer_time = answer_time;
+    }
+
+    public Date getPreserve_time() {
+        return preserve_time;
+    }
+
+    public void setPreserve_time(Date preserve_time) {
+        this.preserve_time = preserve_time;
+    }
+
+    public String getFail_reason() {
+        return fail_reason;
+    }
+
+    public void setFail_reason(String fail_reason) {
+        this.fail_reason = fail_reason;
     }
 }

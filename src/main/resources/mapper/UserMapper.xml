@@ -12,7 +12,7 @@
         select portrait as url from pcuser
     </select>
 
-    <select id="getPortraitByUserIdCount" resultType="java.lang.Integer">
+    <select id="getProblemByUserIdCount" resultType="java.lang.Integer">
         select count(*) from problem where user_id = #{userId} and problem_state = #{type} 
         <if test="type == 2">
             and answer = #{answer}
@@ -20,13 +20,31 @@
 
     </select>
 
-    <select id="getPortraitByUserId" resultType="map">
-        select id,problem,problem_time,problem_state,problem_img from problem where user_id = #{userId}
-        and problem_state = #{type}
-        <if test="type == 2">
-            and answer = #{answer}
-        </if>
-        order by problem_time ${ascOrDesc}
+    <select id="getProblemByUserId0" resultType="map">
+        select id,problem,preserve_time as preserveTime from problem where user_id = #{userId}
+        and problem_state = 0
         limit #{pageStart},#{pageSize}
     </select>
+    <select id="getProblemByUserId1" resultType="map">
+        select id,problem,submit_time as submitTime from problem where user_id = #{userId}
+        and problem_state = 1
+        limit #{pageStart},#{pageSize}
+    </select>
+    <select id="getProblemByUserId2" resultType="map">
+        select id,problem,examine_time as examineTime from problem where user_id = #{userId}
+        and problem_state = 2
+        limit #{pageStart},#{pageSize}
+    </select>
+    <select id="getProblemByUserId3" resultType="map">
+        select id,problem,answer_time as answerTime from problem where user_id = #{userId}
+        and problem_state = 3
+        limit #{pageStart},#{pageSize}
+    </select>
+    <select id="getProblemByUserId4" resultType="map">
+        select id,problem,submit_time as submitTime,examine_time as examineTime,fail_reason as failReason from problem where user_id = #{userId}
+        and problem_state = 4
+        limit #{pageStart},#{pageSize}
+    </select>
+
+
 </mapper>

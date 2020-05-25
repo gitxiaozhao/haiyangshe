@@ -16,7 +16,16 @@ public interface UserMapper {
 
     List<Map> getUserPortrait();
 
-    Integer getPortraitByUserIdCount( @Param("userId") String userId,@Param("type") Integer type,@Param("answer") Integer answer);
+    Integer getProblemByUserIdCount( @Param("userId") Integer userId,@Param("type") Integer type);
 
-    List getPortraitByUserId(@Param("userId") String userId, @Param("ascOrDesc") String ascOrDesc, @Param("pageStart") Integer pageStart, @Param("pageSize") Integer pageSize,@Param("type") Integer type,@Param("answer") Integer answer);
+    List getProblemByUserId0(@Param("userId") Integer userId, @Param("pageStart") Integer pageStart, @Param("pageSize") Integer pageSize);
+
+    List getProblemByUserId1(@Param("userId") Integer userId, @Param("pageStart") Integer pageStart, @Param("pageSize") Integer pageSize);
+
+    List getProblemByUserId2(@Param("userId") Integer userId, @Param("pageStart") Integer pageStart, @Param("pageSize") Integer pageSize);
+
+    List getProblemByUserId3(@Param("userId") Integer userId, @Param("pageStart") Integer pageStart, @Param("pageSize") Integer pageSize);
+
+    List getProblemByUserId4(@Param("userId") Integer userId, @Param("pageStart") Integer pageStart, @Param("pageSize") Integer pageSize);
+
 }

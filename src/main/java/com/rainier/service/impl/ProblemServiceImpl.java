@@ -36,7 +36,7 @@ public class ProblemServiceImpl implements ProblemService {
             /*得到用户id*/
             problem.setUser_id(user.getId());
             /*得到提问时间*/
-            problem.setProblem_time(new Date());
+            problem.setSubmit_time(new Date());
             /*默认为0审核中*/
             problem.setProblem_state(0);
             /*默认点击量为0*/
