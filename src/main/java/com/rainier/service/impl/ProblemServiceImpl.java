@@ -63,7 +63,7 @@ public class ProblemServiceImpl implements ProblemService {
             /*得到用户id*/
             reply.setUser_id(user.getId());
             /*得到评论时间*/
-            reply.setReply_time(new Date());
+            reply.setSubmit_time(new Date());
             /*默认为0审核中*/
             reply.setReply_state(0);
             /*默认为0未采纳*/

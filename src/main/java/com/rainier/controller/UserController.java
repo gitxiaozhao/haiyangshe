@@ -74,11 +74,27 @@ public class UserController {
     /*
     * 我的回答
     * */
-    /*@RequestMapping("answers")
+    @RequestMapping("answers")
     @ResponseBody
-    public Result getPortraitByUserIdAndType(@RequestBody Map map, HttpServletRequest request){
-        return userService.getPortraitByUserId(map,request);
-    }*/
+    public Result getReplyByUserIdAndType(@RequestBody Map map, HttpServletRequest request){
+        return userService.getReplyByUserIdAndType(map,request);
+    }
 
+    /*
+    * 批量删除回答
+    * */
+    @RequestMapping("deleteReplyByIds")
+    @ResponseBody
+    public Result deleteReplyByIds(@RequestBody Map map){
+        return userService.deleteReplyByIds(map);
+    }
 
+    /*
+     * 查看被采纳的回答列表
+     * */
+    @RequestMapping("getReplyByAdopt")
+    @ResponseBody
+    public Result getReplyByAdopt(@RequestBody Map map,HttpServletRequest request){
+        return userService.getReplyByAdopt(map,request);
+    }
 }

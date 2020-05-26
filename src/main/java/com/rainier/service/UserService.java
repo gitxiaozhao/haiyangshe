@@ -14,4 +14,10 @@ public interface UserService {
     Result getProblemByUserId(Map map, HttpServletRequest request);
 
     Result deleteProblemById(Map map, HttpServletRequest request);
+
+    Result getReplyByUserIdAndType(Map map, HttpServletRequest request);
+
+    Result deleteReplyByIds(Map map);
+
+    Result getReplyByAdopt(Map map, HttpServletRequest request);
 }

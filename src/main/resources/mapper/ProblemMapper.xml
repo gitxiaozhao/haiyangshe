@@ -7,8 +7,8 @@
       values (#{problem.user_id},#{problem.problem},#{problem.submit_time},#{problem.problem_state},#{problem.problem_img},#{problem.click})
   </insert>
     <insert id="addReply">
-        insert into `reply`(problem_id,user_id,text,last_id,reply_time,reply_img,reply_state,adopt)
-        values (#{reply.problem_id},#{reply.user_id},#{reply.text},#{reply.last_id},#{reply.reply_time},#{reply.reply_img},#{reply.reply_state},#{reply.adopt})
+        insert into `reply`(problem_id,user_id,text,last_id,submit_time,reply_img,reply_state,adopt)
+        values (#{reply.problem_id},#{reply.user_id},#{reply.text},#{reply.last_id},#{reply.submit_time},#{reply.reply_img},#{reply.reply_state},#{reply.adopt})
     </insert>
 
     <select id="getProblemImg" resultType="map">
@@ -19,13 +19,13 @@
     </select>
 
     <select id="getReplyByProblemId" resultType="map">
-        select t1.text,t1.reply_time,t2.account,t1.adopt from reply t1,pcuser t2
+        select t1.text,t1.submit_time,t2.account,t1.adopt from reply t1,pcuser t2
         <where>
             t1.user_id = t2.id
             AND t1.problem_id = #{problemId}
             AND t1.reply_state = 1
         </where>
-        ORDER BY t1.reply_time ${ascOrDesc}
+        ORDER BY t1.submit_time ${ascOrDesc}
         limit #{pageStart},#{pageSize}
     </select>
     <select id="getReplyByProblemIdCount" resultType="java.lang.Integer">

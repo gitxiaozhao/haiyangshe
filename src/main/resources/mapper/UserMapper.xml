@@ -14,9 +14,7 @@
 
     <select id="getProblemByUserIdCount" resultType="java.lang.Integer">
         select count(*) from problem where user_id = #{userId} and problem_state = #{type} 
-        <if test="type == 2">
-            and answer = #{answer}
-        </if>
+
 
     </select>
 
@@ -45,6 +43,93 @@
         and problem_state = 4
         limit #{pageStart},#{pageSize}
     </select>
+    
+    
+    <select id="getReplyByUserIdCount" resultType="java.lang.Integer">
+        select count(*) from reply where user_id = #{userId} and reply_state = #{type}
+    </select>
+    <select id="getReplyByUserId0" resultType="map">
+        SELECT
+            t1.id,
+            t2.problem,
+            t1.text,
+            t1.submit_time
+        FROM
+            reply t1,
+            problem t2
+        WHERE
+            t1.problem_id = t2.id
+            AND t1.user_id = #{userId}
+            AND t1.reply_state = 0
+        limit #{pageStart},#{pageSize}
+    </select>
+    <select id="getReplyByUserId1" resultType="map">
+        SELECT
+            t1.id,
+            t2.problem,
+            t1.text,
+            t1.examine_time
+        FROM
+            reply t1,
+            problem t2
+        WHERE
+            t1.problem_id = t2.id
+            AND t1.user_id = #{userId}
+            AND t1.reply_state = 1
+        limit #{pageStart},#{pageSize}
+    </select>
+    <select id="getReplyByUserId2" resultType="map">
+        SELECT
+            t1.id,
+            t2.problem,
+            t1.text,
+            t1.examine_time,
+            t1.fail_reason
+        FROM
+            reply t1,
+            problem t2
+        WHERE
+            t1.problem_id = t2.id
+            AND t1.user_id = #{userId}
+            AND t1.reply_state = 2
+        limit #{pageStart},#{pageSize}
+    </select>
 
+    <delete id="deleteReplyByIds" >
+        delete from reply
+        <where>
+            id in
+            <foreach collection="ids"  index="index" item="item" open="(" separator="," close=")"  >
+                #{item}
+            </foreach>
+        </where>
+    </delete>
+
+    <select id="getReplyByAdoptCount" resultType="java.lang.Integer">
+        SELECT
+            count(*)
+        FROM
+            reply t1,
+            problem t2
+        WHERE
+            t1.problem_id = t2.id
+            AND t1.user_id = #{userId}
+            AND t1.adopt = 1
+    </select>
+    <select id="getReplyByAdopt" resultType="map">
+        SELECT
+            t1.id,
+            t2.problem,
+            t1.text,
+            t1.adopt_time
+        FROM
+            reply t1,
+            problem t2
+        WHERE
+            t1.problem_id = t2.id
+            AND t1.user_id = #{userId}
+            AND t1.adopt = 1
+        limit #{pageStart},#{pageSize}
+    </select>
 
 </mapper>

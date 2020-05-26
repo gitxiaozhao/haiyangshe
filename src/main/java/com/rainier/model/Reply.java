@@ -11,10 +11,15 @@ public class Reply {
     private String text;
     private Integer last_id;
     @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd")
-    private Date reply_time;
+    private Date submit_time;
     private String reply_img;
     private Integer reply_state;
     private Integer adopt;
+    @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd")
+    private Date examine_time;
+    private String fail_reason;
+    @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd")
+    private Date adopt_time;
 
     public Integer getId() {
         return id;
@@ -56,12 +61,12 @@ public class Reply {
         this.last_id = last_id;
     }
 
-    public Date getReply_time() {
-        return reply_time;
+    public Date getSubmit_time() {
+        return submit_time;
     }
 
-    public void setReply_time(Date reply_time) {
-        this.reply_time = reply_time;
+    public void setSubmit_time(Date submit_time) {
+        this.submit_time = submit_time;
     }
 
     public String getReply_img() {
@@ -86,5 +91,29 @@ public class Reply {
 
     public void setAdopt(Integer adopt) {
         this.adopt = adopt;
+    }
+
+    public Date getExamine_time() {
+        return examine_time;
+    }
+
+    public void setExamine_time(Date examine_time) {
+        this.examine_time = examine_time;
+    }
+
+    public String getFail_reason() {
+        return fail_reason;
+    }
+
+    public void setFail_reason(String fail_reason) {
+        this.fail_reason = fail_reason;
+    }
+
+    public Date getAdopt_time() {
+        return adopt_time;
+    }
+
+    public void setAdopt_time(Date adopt_time) {
+        this.adopt_time = adopt_time;
     }
 }
