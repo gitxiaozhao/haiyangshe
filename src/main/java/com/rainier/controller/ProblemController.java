@@ -137,6 +137,15 @@ public class ProblemController {
         return problemService.getProblemHot();
     }
 
+
+    /*
+    * 问答搜索框搜索
+    * */
+    @RequestMapping("getProblemList")
+    @ResponseBody
+    public Result getProblemList(@RequestBody Map map){
+        return problemService.getProblemList(map);
+    }
     /**
     * @描述 问答检索
     * @参数注释：

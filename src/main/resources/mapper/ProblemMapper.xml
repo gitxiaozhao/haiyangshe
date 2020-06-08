@@ -3,8 +3,8 @@
 <mapper namespace="com.rainier.mapper.ProblemMapper" >
 
   <insert id="addProblem" >
-      insert into `problem`(user_id,problem,submit_time,problem_state,problem_img,click)
-      values (#{problem.user_id},#{problem.problem},#{problem.submit_time},#{problem.problem_state},#{problem.problem_img},#{problem.click})
+      insert into `problem`(user_id,problem,submit_time,problem_state,problem_img,problem_info,keyword)
+      values (#{problem.userId},#{problem.problem},#{problem.submitTime},#{problem.state},#{problem.img},#{problem.info},#{problem.keyword})
   </insert>
     <insert id="addReply">
         insert into `reply`(problem_id,user_id,text,last_id,submit_time,reply_img,reply_state,adopt)
@@ -81,5 +81,73 @@
 
     <select id="getProblemHot" resultType="map">
         select * from problem ORDER BY click desc LIMIT 0,10
+    </select>
+
+    <select id="getProblemListCount" resultType="java.lang.Integer">
+        SELECT
+            count(*)
+        FROM
+            (
+        SELECT
+            t1.id,
+            t1.problem,
+            t2.text,
+            t1.submit_time AS submitTime,
+            t3.account,
+            count( t2.text ) AS replyNum,
+            t2.adopt
+        FROM
+            problem t1
+            LEFT JOIN reply t2 ON t1.id = t2.problem_id
+            LEFT JOIN pcuser t3 ON t2.user_id = t3.id
+        GROUP BY
+            t1.problem
+        HAVING
+            1=1
+            <if test="key != null and key != ''">
+                AND t1.problem LIKE '%${key}%'
+            </if>
+            <if test="yearType == '近一周'">
+                AND DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(t1.submit_time)
+            </if>
+            <if test="yearType == '近一月'">
+                AND DATE_SUB(CURDATE(), INTERVAL 1 MONTH) &lt;= date(t1.submit_time)
+            </if>
+            <if test="yearType == '近一年'">
+                AND DATE_SUB(CURDATE(), INTERVAL 12 MONTH) &lt;= date(t1.submit_time)
+            </if>
+            ) tab
+    </select>
+
+    <select id="getProblemList" resultType="map">
+        SELECT
+            t1.id,
+            t1.problem,
+            t2.text,
+            t1.submit_time AS submitTime,
+            t3.account,
+            count( t2.text ) AS replyNum,
+            t2.adopt
+        FROM
+            problem t1
+            LEFT JOIN reply t2 ON t1.id = t2.problem_id
+            LEFT JOIN pcuser t3 ON t2.user_id = t3.id
+        GROUP BY
+            t1.problem
+        HAVING
+            1=1
+            <if test="key != null and key != ''">
+                AND t1.problem LIKE '%${key}%'
+            </if>
+            <if test="yearType == '近一周'">
+                AND DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(t1.submit_time)
+            </if>
+            <if test="yearType == '近一月'">
+                AND DATE_SUB(CURDATE(), INTERVAL 1 MONTH) &lt;= date(t1.submit_time)
+            </if>
+            <if test="yearType == '近一年'">
+                AND DATE_SUB(CURDATE(), INTERVAL 12 MONTH) &lt;= date(t1.submit_time)
+            </if>
+        limit #{pageStart},#{pageEnd}
     </select>
 </mapper>

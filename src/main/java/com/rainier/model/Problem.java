@@ -1,27 +1,24 @@
 package com.rainier.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
 public class Problem {
     private Integer id;
-    private Integer user_id;
+    private Integer userId;
     private String problem;
-    @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd")
-    private Date submit_time;
-    private Integer problem_state;
-    private String problem_img;
+    private Date submitTime;
+    private Integer state;
+    private String img;
     private Integer click;
-    private Integer answer;
-    private Integer problem_info;
-    @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd")
-    private Date examine_time;
-    @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd")
-    private Date answer_time;
-    @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd")
-    private Date preserve_time;
-    private String fail_reason;
+    private String info;
+    private Date examineTime;
+    private Date answerTime;
+    private Date preserveTime;
+    private String failReason;
+    private String keyword;
 
     public Integer getId() {
         return id;
@@ -31,12 +28,12 @@ public class Problem {
         this.id = id;
     }
 
-    public Integer getUser_id() {
-        return user_id;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUser_id(Integer user_id) {
-        this.user_id = user_id;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public String getProblem() {
@@ -47,28 +44,28 @@ public class Problem {
         this.problem = problem;
     }
 
-    public Date getSubmit_time() {
-        return submit_time;
+    public Date getSubmitTime() {
+        return submitTime;
     }
 
-    public void setSubmit_time(Date submit_time) {
-        this.submit_time = submit_time;
+    public void setSubmitTime(Date submitTime) {
+        this.submitTime = submitTime;
     }
 
-    public Integer getProblem_state() {
-        return problem_state;
+    public Integer getState() {
+        return state;
     }
 
-    public void setProblem_state(Integer problem_state) {
-        this.problem_state = problem_state;
+    public void setState(Integer state) {
+        this.state = state;
     }
 
-    public String getProblem_img() {
-        return problem_img;
+    public String getImg() {
+        return img;
     }
 
-    public void setProblem_img(String problem_img) {
-        this.problem_img = problem_img;
+    public void setImg(String img) {
+        this.img = img;
     }
 
     public Integer getClick() {
@@ -79,51 +76,51 @@ public class Problem {
         this.click = click;
     }
 
-    public Integer getAnswer() {
-        return answer;
+    public String getInfo() {
+        return info;
     }
 
-    public void setAnswer(Integer answer) {
-        this.answer = answer;
+    public void setInfo(String info) {
+        this.info = info;
     }
 
-    public Integer getProblem_info() {
-        return problem_info;
+    public Date getExamineTime() {
+        return examineTime;
     }
 
-    public void setProblem_info(Integer problem_info) {
-        this.problem_info = problem_info;
+    public void setExamineTime(Date examineTime) {
+        this.examineTime = examineTime;
     }
 
-    public Date getExamine_time() {
-        return examine_time;
+    public Date getAnswerTime() {
+        return answerTime;
     }
 
-    public void setExamine_time(Date examine_time) {
-        this.examine_time = examine_time;
+    public void setAnswerTime(Date answerTime) {
+        this.answerTime = answerTime;
     }
 
-    public Date getAnswer_time() {
-        return answer_time;
+    public Date getPreserveTime() {
+        return preserveTime;
     }
 
-    public void setAnswer_time(Date answer_time) {
-        this.answer_time = answer_time;
+    public void setPreserveTime(Date preserveTime) {
+        this.preserveTime = preserveTime;
     }
 
-    public Date getPreserve_time() {
-        return preserve_time;
+    public String getFailReason() {
+        return failReason;
     }
 
-    public void setPreserve_time(Date preserve_time) {
-        this.preserve_time = preserve_time;
+    public void setFailReason(String failReason) {
+        this.failReason = failReason;
     }
 
-    public String getFail_reason() {
-        return fail_reason;
+    public String getKeyword() {
+        return keyword;
     }
 
-    public void setFail_reason(String fail_reason) {
-        this.fail_reason = fail_reason;
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
 }

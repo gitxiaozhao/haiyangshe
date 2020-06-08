@@ -10,6 +10,7 @@ import com.rainier.util.Result;
 import jdk.nashorn.internal.runtime.options.LoggingOption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.DateFormat;
@@ -21,11 +22,15 @@ import java.util.Locale;
 import java.util.Map;
 
 @Service
+@Transactional
 public class ProblemServiceImpl implements ProblemService {
 
     @Autowired
     private ProblemMapper problemMapper;
 
+    /*
+    * 提问问题
+    * */
     @Override
     public Result addProblem(Problem problem, HttpServletRequest request) {
         //得到用户信息
@@ -34,13 +39,11 @@ public class ProblemServiceImpl implements ProblemService {
             return Result.error("请重新登录！");
         }else{
             /*得到用户id*/
-            problem.setUser_id(user.getId());
+            problem.setUserId(user.getId());
             /*得到提问时间*/
-            problem.setSubmit_time(new Date());
-            /*默认为0审核中*/
-            problem.setProblem_state(0);
-            /*默认点击量为0*/
-            problem.setClick(0);
+            problem.setSubmitTime(new Date());
+            /*默认为1提交等待审核*/
+            problem.setState(1);
 
             /*添加问题*/
             int i = problemMapper.addProblem(problem);
@@ -116,7 +119,7 @@ public class ProblemServiceImpl implements ProblemService {
     @Override
     public Result updateProblem(Problem problem, HttpServletRequest request) {
         /*修改完问题状态应该为0审核中*/
-        problem.setProblem_state(0);
+        problem.setState(0);
         problemMapper.updateProblem(problem);
         return Result.success();
     }
@@ -135,6 +138,25 @@ public class ProblemServiceImpl implements ProblemService {
     public Result getProblemHot() {
         List list = problemMapper.getProblemHot();
         return Result.success(list);
+    }
+
+    /*
+    * 问答搜索框搜索
+    * */
+    @Override
+    public Result getProblemList(Map map) {
+        /*获得搜索框关键字*/
+        String key = map.get("key").toString();
+        String yearType = map.get("yearType").toString();
+        Integer pageIndex = Integer.parseInt(map.get("pageIndex").toString());//当前页数
+        Integer pageSize = Integer.parseInt(map.get("pageSize").toString());//每页条数
+        Page page = new Page();
+        page.setPageIndex(pageIndex);
+        page.setPageSize(pageSize);
+        page.setTotalRecords(problemMapper.getProblemListCount(key,yearType));
+        List<Map> problemList = problemMapper.getProblemList(key,yearType, ((page.getPageIndex() - 1) * page.getPageSize()), page.getPageSize());
+        page.setList(problemList);
+        return Result.success(page);
     }
 
 

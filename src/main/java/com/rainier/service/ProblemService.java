@@ -24,4 +24,6 @@ public interface ProblemService {
     Result deleteProblemByIds(Map map);
 
     Result getProblemHot();
+
+    Result getProblemList(Map map);
 }

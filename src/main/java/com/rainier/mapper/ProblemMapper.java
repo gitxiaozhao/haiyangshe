@@ -37,4 +37,10 @@ public interface ProblemMapper {
     void deleteReplyByProblemIds(@Param("ids")List ids);
 
     List getProblemHot();
+
+    Integer getProblemListCount( @Param("key") String key,@Param("yearType") String yearType);
+
+    List getProblemList(@Param("key") String key,@Param("yearType") String yearType, @Param("pageStart") Integer pageStart, @Param("pageEnd") Integer pageSize);
+
+
 }
